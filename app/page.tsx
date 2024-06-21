@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import * as aas from "@aas-core-works/aas-core3.0-typescript";
-import { Submodel } from "@aas-core-works/aas-core3.0-typescript/types";
+import {
+  Environment,
+  Submodel,
+} from "@aas-core-works/aas-core3.0-typescript/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,26 +30,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ThemeProperty from "../components/ui/customComponent/theme-property";
-import aasFiletest from "../public/dpp copy.json";
 
 export default function Home() {
-  // const [aasFile, setAASModel] = useState<Environment | null>();
+  const [aasFile, setAASModel] = useState<Environment | null>();
   const [logoFile, setLogoFile] = useState<any>();
   const [fmsFile, setFmsFile] = useState<string>();
   const [loading, setLoading] = useState(true);
-  const aasFile = aasFiletest;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // 대상모델 가져오기
-        // const response = await fetch("/dpp copy.json");
-        // const jsonData = await response.json();
-        // console.log("djqtdj?", jsonData);
-        // const model = aas.jsonization.environmentFromJsonable(jsonData);
-        // setAASModel(aasFiletest);
+        const response = await fetch("/dpp copy.json");
+        const jsonData = await response.json();
+        console.log("djqtdj?", jsonData);
+        const model = aas.jsonization.environmentFromJsonable(jsonData);
+        setAASModel(model.value);
 
-        // console.log("여기여기", model.value);
+        console.log("여기여기", model.value);
         //Keti 메인 로고 가져오기
         const logoResponse = await fetch("KETI_CI국영문.png");
         const logoBlob = await logoResponse.blob();
@@ -248,21 +249,21 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="font-medium">Temperature</div>
-                  <div className="text-gray-500 font-semibold">22°C</div>
+                  <div className="font-medium">Manufacturer</div>
+                  <div className="text-gray-500 font-semibold">SMIC</div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="font-medium">Humidity</div>
-                  <div className="text-gray-500 font-semibold">65%</div>
+                  <div className="font-medium">ProductName</div>
+                  <div className="text-gray-500 font-semibold">Pencil case</div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">Uptime</div>
+                {/* <div className="flex items-center justify-between">
+                  <div className="font-medium">Product Name</div>
                   <div className="text-green-500 font-semibold">99.99%</div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="font-medium">Response Time</div>
                   <div className="text-gray-500 font-semibold">250ms</div>
-                </div>
+                </div> */}
               </CardContent>
             </Card>
             <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
