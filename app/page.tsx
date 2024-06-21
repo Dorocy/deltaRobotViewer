@@ -1,113 +1,363 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import * as aas from "@aas-core-works/aas-core3.0-typescript";
+import {
+  Environment,
+  SubmodelElementCollection,
+} from "@aas-core-works/aas-core3.0-typescript/types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import {
+  CalendarIcon,
+  HomeIcon,
+  MessageCircleIcon,
+  Package2Icon,
+  PcCaseIcon,
+  QrCodeIcon,
+  SearchIcon,
+  SettingsIcon,
+  UsersIcon,
+} from "lucide-react";
+import { useQRCode } from "next-qrcode";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [aasFile, setAASModel] = useState<Environment | null>();
+  const [logoFile, setLogoFile] = useState<string>();
+  const [fmsFile, setFmsFile] = useState<string>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 대상모델 가져오기
+        const response = await fetch("/dpp copy.json");
+        const jsonData = await response.json();
+        const model = aas.jsonization.environmentFromJsonable(jsonData);
+        setAASModel(model.value);
+
+        console.log("여기여기", model.value);
+        //Keti 메인 로고 가져오기
+        const logoResponse = await fetch("KETI_CI국영문.png");
+        const logoBlob = await logoResponse.blob();
+        const logoUrl = URL.createObjectURL(logoBlob);
+        setLogoFile(logoUrl);
+
+        //fms사진
+        const fmsimageResponse = await fetch("fms_thumbnail.png");
+        const fmsimageBlob = await fmsimageResponse.blob();
+        const fmsimageUrl = URL.createObjectURL(fmsimageBlob);
+        setFmsFile(fmsimageUrl);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const { Canvas } = useQRCode();
+
+  const submodels = aasFile?.submodels;
+  const assetInfo = aasFile?.assetAdministrationShells;
+  const submodelElements = aasFile?.submodels;
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="grid min-h-screen w-full overflow-hidden lg:grid-cols-[280px_1fr]">
+      <div className="hidden border-r bg-muted/40 lg:block">
+        <div className="flex flex-col gap-2">
+          <div className="flex h-[60px] items-center px-6">
+            <Link
+              href="#"
+              className="flex items-center gap-2 font-semibold"
+              prefetch={false}
+            >
+              {logoFile && (
+                <Image
+                  src={logoFile}
+                  alt="logo_image"
+                  width={200}
+                  height={100}
+                />
+              )}
+            </Link>
+          </div>
+          <div className="flex-1">
+            <nav className="grid items-start px-4 text-sm font-medium">
+              <Link
+                href="#"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                prefetch={false}
+              >
+                <HomeIcon className="h-4 w-4" />
+                Dashboard
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary  transition-all hover:text-primary"
+                prefetch={false}
+              >
+                <UsersIcon className="h-4 w-4" />
+                Doctors
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                prefetch={false}
+              >
+                <UsersIcon className="h-4 w-4" />
+                Patients
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                prefetch={false}
+              >
+                <CalendarIcon className="h-4 w-4" />
+                Appointments
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                prefetch={false}
+              >
+                <MessageCircleIcon className="h-4 w-4" />
+                Messages
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                prefetch={false}
+              >
+                <SettingsIcon className="h-4 w-4" />
+                Settings
+              </Link>
+            </nav>
+          </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className="flex flex-col">
+        <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-muted/40 px-6">
+          <Link href="#" className="lg:hidden" prefetch={false}>
+            <Package2Icon className="h-6 w-6" />
+            <span className="sr-only">Home</span>
+          </Link>
+          <div className="flex-1">
+            <h1 className="font-semibold text-lg">
+              Digital Product Passport Dashboard
+            </h1>
+          </div>
+          <div className="flex flex-1 items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+            <form className="ml-auto flex-1 sm:flex-initial">
+              <div className="relative">
+                <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search..."
+                  className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+                />
+              </div>
+            </form>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  {/* <img
+                    src="/placeholder.svg"
+                    width="32"
+                    height="32"
+                    className="rounded-full"
+                    alt="Avatar"
+                  /> */}
+                  <span className="sr-only">Toggle user menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Admin</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </header>
+        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
+              <Image
+                src={fmsFile}
+                alt="Card Image"
+                width={300}
+                height={300}
+                className="w-full h-48 object-cover"
+              />
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-lg font-bold">
+                  Pencile Case
+                </CardTitle>
+                <PcCaseIcon className="w-4 h-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                {/* <div className="text-2xl font-bold">124</div>
+                <p className="text-xs text-muted-foreground">
+                  +10 since last month
+                </p> */}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-lg font-bold">
+                  AAS Information
+                </CardTitle>
+                <UsersIcon className="w-4 h-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="font-medium">AssetID</div>
+                  <div className="text-gray-500 font-semibold">
+                    assetInfo?.[0]
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="font-medium">Site Information</div>
+                  <div className="text-gray-500 font-semibold">Main Office</div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="font-medium">Temperature</div>
+                  <div className="text-gray-500 font-semibold">22°C</div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="font-medium">Humidity</div>
+                  <div className="text-gray-500 font-semibold">65%</div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="font-medium">Uptime</div>
+                  <div className="text-green-500 font-semibold">99.99%</div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="font-medium">Response Time</div>
+                  <div className="text-gray-500 font-semibold">250ms</div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Mobile QR Code
+                </CardTitle>
+                <QrCodeIcon className="w-4 h-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-md font-light text-muted-foreground">
+                  Scan this QR code using Mobile
+                </div>
+                <div className="qrCode pt-5">
+                  <Canvas
+                    text={"http://172.21.50.144:3002/"}
+                    options={{
+                      errorCorrectionLevel: "M",
+                      margin: 3,
+                      scale: 4,
+                      width: 150,
+                      color: {
+                        dark: "#FFFFFFFF", // 어두운 부분을 흰색으로 변경
+                        light: "#000000FF",
+                      },
+                    }}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Messages</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <Tabs
+                      defaultValue={submodelElementItems[0].idShort}
+                      className="mt-3"
+                    >
+                      <TabsList className="inline-flex flex-wrap justify-between">
+                        {submodelElementItems?.map(
+                          (element: SubmodelElementCollection, i: number) => (
+                            <TabsTrigger key={i} value={element.idShort ?? ""}>
+                              {element.idShort ?? ""}
+                            </TabsTrigger>
+                          )
+                        )}
+                      </TabsList>
+                      {submodelElementItems.map(
+                        (element: SubmodelElementCollection, i: number) => (
+                          <TabsContent key={i} value={element.idShort ?? ""}>
+                            {(() => {
+                              const elements = [];
+                              for (const item of element.descendOnce()) {
+                                if (aas.types.isSubmodelElement(item)) {
+                                  elements.push(
+                                    <ThemeProperty
+                                      dataElement={item}
+                                      toggleDrawer={toggleDrawer}
+                                    />
+                                  );
+                                }
+                              }
+                              return elements;
+                            })()}
+                          </TabsContent>
+                        )
+                      )}
+                    </Tabs>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  {"아바타말고"}
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <div className="font-medium">Jane Doe</div>
+                      <div className="text-xs text-muted-foreground">
+                        1 day ago
+                      </div>
+                    </div>
+                    <p className="text-muted-foreground">
+                      I need to reschedule my appointment. Can you please help
+                      me with that?
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <div className="font-medium">Bob Smith</div>
+                      <div className="text-xs text-muted-foreground">
+                        3 days ago
+                      </div>
+                    </div>
+                    <p className="text-muted-foreground">
+                      I'm having trouble accessing my patient portal. Can you
+                      please help me?
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }
