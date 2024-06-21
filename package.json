@@ -22,6 +22,7 @@
     "next": "14.2.4",
     "next-qrcode": "^2.5.1",
     "react": "^18",
+    "core-js": "3.37.1",
     "react-dom": "^18",
     "react-pdf": "^9.0.0",
     "tailwind-merge": "^2.3.0",
