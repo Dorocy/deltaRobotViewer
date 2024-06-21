@@ -32,7 +32,7 @@ import { useQRCode } from "next-qrcode";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import ThemeProperty from "./customComponent/theme-property";
+import ThemeProperty from "../components/ui/customComponent/theme-property";
 
 export default function Home() {
   const [aasFile, setAASModel] = useState<Environment | null>();
