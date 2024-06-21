@@ -3,12 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import * as aas from "@aas-core-works/aas-core3.0-typescript";
-import {
-  Environment,
-  SubmodelElementCollection,
-} from "@aas-core-works/aas-core3.0-typescript/types";
+import { Environment } from "@aas-core-works/aas-core3.0-typescript/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,8 +32,9 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [aasFile, setAASModel] = useState<Environment | null>();
-  const [logoFile, setLogoFile] = useState<string>();
+  const [logoFile, setLogoFile] = useState<any>();
   const [fmsFile, setFmsFile] = useState<string>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +42,7 @@ export default function Home() {
         // 대상모델 가져오기
         const response = await fetch("/dpp copy.json");
         const jsonData = await response.json();
+        console.log("djqtdj?", jsonData);
         const model = aas.jsonization.environmentFromJsonable(jsonData);
         setAASModel(model.value);
 
@@ -70,7 +69,14 @@ export default function Home() {
 
   const submodels = aasFile?.submodels;
   const assetInfo = aasFile?.assetAdministrationShells;
-  const submodelElements = aasFile?.submodels;
+  // const submodelElements = aasFile?.submodels;
+  console.log(aasFile);
+
+  console.log("확인해볼까요 ? ㅋㅋㅋㅋ s", submodels);
+
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // } else
 
   return (
     <div className="grid min-h-screen w-full overflow-hidden lg:grid-cols-[280px_1fr]">
@@ -283,44 +289,39 @@ export default function Home() {
           <div>
             <Card>
               <CardHeader>
-                <CardTitle>Recent Messages</CardTitle>
+                <CardTitle>Submodel Information</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <Tabs
-                      defaultValue={submodelElementItems[0].idShort}
-                      className="mt-3"
-                    >
+                    <Tabs defaultValue={"DigitalNameplate"} className="mt-3">
                       <TabsList className="inline-flex flex-wrap justify-between">
-                        {submodelElementItems?.map(
-                          (element: SubmodelElementCollection, i: number) => (
-                            <TabsTrigger key={i} value={element.idShort ?? ""}>
-                              {element.idShort ?? ""}
-                            </TabsTrigger>
-                          )
-                        )}
+                        {submodels?.map((element: any, i: number) => (
+                          <TabsTrigger key={i} value={element.idShort ?? ""}>
+                            {element.idShort ?? ""}
+                          </TabsTrigger>
+                        ))}
                       </TabsList>
-                      {submodelElementItems.map(
-                        (element: SubmodelElementCollection, i: number) => (
-                          <TabsContent key={i} value={element.idShort ?? ""}>
-                            {(() => {
-                              const elements = [];
-                              for (const item of element.descendOnce()) {
-                                if (aas.types.isSubmodelElement(item)) {
-                                  elements.push(
-                                    <ThemeProperty
-                                      dataElement={item}
-                                      toggleDrawer={toggleDrawer}
-                                    />
-                                  );
-                                }
+                      {/* {submodels?.submodelElements?.map((element, i: number) => (
+                        console.log('뭔지확인이필요하지?',element)
+                        <TabsContent key={i} value={element.idShort ?? ""}>
+                          {(() => {
+                            const elements = [];
+                            for (const item of element.descendOnce()) {
+                              if (aas.types.isSubmodelElement(item)) {
+                                elements.push(
+                                  "anjsi"
+                                  // <ThemeProperty
+                                  //   dataElement={item}
+                                  //   // toggleDrawer={toggleDrawer}
+                                  // />å
+                                );
                               }
-                              return elements;
-                            })()}
-                          </TabsContent>
-                        )
-                      )}
+                            }
+                            return elements;
+                          })()}
+                        </TabsContent>
+                      ))} */}
                     </Tabs>
                   </div>
                 </div>
