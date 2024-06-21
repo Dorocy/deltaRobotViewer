@@ -256,14 +256,6 @@ export default function Home() {
                   <div className="font-medium">ProductName</div>
                   <div className="text-gray-500 font-semibold">Pencil case</div>
                 </div>
-                {/* <div className="flex items-center justify-between">
-                  <div className="font-medium">Product Name</div>
-                  <div className="text-green-500 font-semibold">99.99%</div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">Response Time</div>
-                  <div className="text-gray-500 font-semibold">250ms</div>
-                </div> */}
               </CardContent>
             </Card>
             <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
