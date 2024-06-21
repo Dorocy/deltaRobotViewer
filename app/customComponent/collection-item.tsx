@@ -58,11 +58,8 @@ const CollapsibleItem = (props: { item: SubmodelElementCollection }) => {
                 </div>
                 <div>
                   <p className="text-sm font-medium leading-none">value</p>
-                  <p className="text-muted-foreground  text-sm">
-                    {'item'}
-                  </p>
+                  <p className="text-muted-foreground  text-sm">{"item"}</p>
                 </div>
-                <div></div>
               </div>
             </div>
           ))}
