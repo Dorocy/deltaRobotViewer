@@ -205,13 +205,19 @@ export default function Home() {
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
             <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
-              <Image
-                src={fmsFile}
-                alt="Card Image"
-                width={300}
-                height={300}
-                className="w-full h-48 object-cover"
-              />
+              {fmsFile ? (
+                <Image
+                  src={fmsFile}
+                  alt="Card Image"
+                  width={300}
+                  height={300}
+                  className="w-full h-48 object-cover"
+                />
+              ) : (
+                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                  <span>No Image Available</span>
+                </div>
+              )}
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-bold">
                   Pencile Case
