@@ -18,14 +18,11 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import {
-  CalendarIcon,
   HomeIcon,
-  MessageCircleIcon,
   Package2Icon,
   PcCaseIcon,
   QrCodeIcon,
   SearchIcon,
-  SettingsIcon,
   UsersIcon,
 } from "lucide-react";
 import { useQRCode } from "next-qrcode";
@@ -112,7 +109,7 @@ export default function Home() {
                 <HomeIcon className="h-4 w-4" />
                 Dashboard
               </Link>
-              <Link
+              {/* <Link
                 href="#"
                 className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary  transition-all hover:text-primary"
                 prefetch={false}
@@ -151,7 +148,7 @@ export default function Home() {
               >
                 <SettingsIcon className="h-4 w-4" />
                 Settings
-              </Link>
+              </Link> */}
             </nav>
           </div>
         </div>
