@@ -1,6 +1,16 @@
+[dev]
+    command = "npm run dev"
+    port = 8888
+    targetPort = 18000
+    publish = ".next"
+
 [build]
-command = "next build && next export"
-publish = ".next"
+    publish = ".next"
+
+[functions]
+    directory = "api"
+    external_node_modules = ["sequelize"]
+
 
 [[plugins]]
 package = "@netlify/plugin-nextjs"
