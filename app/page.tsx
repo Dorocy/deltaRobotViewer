@@ -3,9 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import * as aas from "@aas-core-works/aas-core3.0-typescript";
-import { Environment } from "@aas-core-works/aas-core3.0-typescript/types";
+import {
+  Environment,
+  Submodel,
+} from "@aas-core-works/aas-core3.0-typescript/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +32,7 @@ import { useQRCode } from "next-qrcode";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ThemeProperty from "./customComponent/theme-property";
 
 export default function Home() {
   const [aasFile, setAASModel] = useState<Environment | null>();
@@ -221,7 +225,7 @@ export default function Home() {
                 </p> */}
               </CardContent>
             </Card>
-            <Card>
+            <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-bold">
                   AAS Information
@@ -231,13 +235,15 @@ export default function Home() {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div className="font-medium">AssetID</div>
-                  <div className="text-gray-500 font-semibold">
-                    assetInfo?.[0]
+                  <div className="text-gray-500 font-light">
+                    {assetInfo?.[0].assetInformation.globalAssetId}
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="font-medium">Site Information</div>
-                  <div className="text-gray-500 font-semibold">Main Office</div>
+                  <div className="font-medium">AAS ID</div>
+                  <div className="text-gray-500 font-light">
+                    {assetInfo?.[0].id}
+                  </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="font-medium">Temperature</div>
@@ -257,7 +263,7 @@ export default function Home() {
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">
                   Mobile QR Code
@@ -302,56 +308,25 @@ export default function Home() {
                           </TabsTrigger>
                         ))}
                       </TabsList>
-                      {/* {submodels?.submodelElements?.map((element, i: number) => (
-                        console.log('뭔지확인이필요하지?',element)
+                      {submodels?.map((element: Submodel, i: number) => (
                         <TabsContent key={i} value={element.idShort ?? ""}>
                           {(() => {
                             const elements = [];
                             for (const item of element.descendOnce()) {
                               if (aas.types.isSubmodelElement(item)) {
                                 elements.push(
-                                  "anjsi"
-                                  // <ThemeProperty
-                                  //   dataElement={item}
-                                  //   // toggleDrawer={toggleDrawer}
-                                  // />å
+                                  <ThemeProperty
+                                    dataElement={item}
+                                    // toggleDrawer={toggleDrawer}
+                                  />
                                 );
                               }
                             }
                             return elements;
                           })()}
                         </TabsContent>
-                      ))} */}
+                      ))}
                     </Tabs>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  {"아바타말고"}
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <div className="font-medium">Jane Doe</div>
-                      <div className="text-xs text-muted-foreground">
-                        1 day ago
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground">
-                      I need to reschedule my appointment. Can you please help
-                      me with that?
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <div className="font-medium">Bob Smith</div>
-                      <div className="text-xs text-muted-foreground">
-                        3 days ago
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground">
-                      I'm having trouble accessing my patient portal. Can you
-                      please help me?
-                    </p>
                   </div>
                 </div>
               </CardContent>
