@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
-import PdfElement from "./pdf-element";
-import CommonElement from "./common-element";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 import CollapsibleItem from "./collection-item";
+import CommonElement from "./common-element";
+import PdfElement from "./pdf-element";
 
 const ThemeProperty = (props: {
   dataElement: any;
@@ -86,12 +86,12 @@ const ThemeProperty = (props: {
                 <p className="text-sm font-medium leading-none">Value</p>
                 <p className="text-muted-foreground text-sm">{element.value}</p>
               </div>
-              {/* {getFileExtension(element.value) === "pdf" ? (
+              {getFileExtension(element.value) === "pdf" ? (
                 <PdfElement detailInfo={element.value} />
               ) : (
                 <CommonElement detailInfo={element.value} />
-              )} */}
-              <CommonElement detailInfo={element.value} />
+              )}
+              {/* <CommonElement detailInfo={element.value} /> */}
             </div>
           )}
         </div>
