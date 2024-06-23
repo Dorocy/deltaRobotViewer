@@ -22,7 +22,7 @@
     "lucide-react": "^0.395.0",
     "next": "14.2.4",
     "next-qrcode": "^2.5.1",
-    "pdfjs-dist": "^4.3.136",
+    "pdfjs-dist": "^2.7.570",
     "react": "^18",
     "react-dom": "^18",
     "react-pdf": "^9.0.0",
