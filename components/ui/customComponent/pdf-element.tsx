@@ -2,34 +2,41 @@
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-
+import "@babel/polyfill";
 import { FileTextIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//   "pdfjs-dist/legacy/build/pdf.worker.min.mjs",
+//   import.meta.url
+// ).toString();
+
+pdfjs.GlobalWorkerOptions.workerSrc =
+  "//mozilla.github.io/pdf.js/build/pdf.worker.mjs";
+// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PdfElement = (props: { detailInfo: any }) => {
   const infoData = props.detailInfo;
-  const fileName = infoData.split("/").pop();
+  // const fileName = infoData.split("/").pop();
+  const fileName = "/SmallSiteDrawing2.pdf";
   const [fileData, setFileData] = useState<string>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/" + fileName);
+        const response = await fetch("/" + "SmallSiteDrawing2.pdf");
         const data = await response.blob();
         const url = URL.createObjectURL(data);
         setFileData(url);
         setLoading(false);
-        console.log();
       } catch (error) {
         console.error("데이터 가져오기 오류:", error);
       }
     };
 
     fetchData();
-  }, [fileName]);
+  }, []);
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -40,9 +47,8 @@ const PdfElement = (props: { detailInfo: any }) => {
   const [numPages, setNumPages] = useState<number>();
   const [pageNumber, setPageNumber] = useState<number>(1);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) =>
     setNumPages(numPages);
-  }
 
   return (
     <Sheet>
@@ -55,16 +61,22 @@ const PdfElement = (props: { detailInfo: any }) => {
         style={{ maxWidth: "850px", maxHeight: "100vh", overflowY: "scroll" }}
       >
         <div>
-          <Document file={`/${fileName}`} onLoadSuccess={onDocumentLoadSuccess}>
-            {Array.from(new Array(numPages), (_, index) => (
-              <Page
-                width={700}
-                key={index}
-                pageNumber={index + 1}
-                renderAnnotationLayer={false}
-              />
-            ))}
-          </Document>
+          {fileData && (
+            <Document
+              file={`/${fileName}`}
+              onLoadSuccess={onDocumentLoadSuccess}
+            >
+              <Page pageNumber={pageNumber} />
+              {/* {Array.from(new Array(numPages), (_, index) => (
+                <Page
+                  width={700}
+                  key={index}
+                  pageNumber={index + 1}
+                  renderAnnotationLayer={false}
+                />
+              ))} */}
+            </Document>
+          )}
         </div>
       </SheetContent>
     </Sheet>
