@@ -12,9 +12,8 @@ import { Document, Page, pdfjs } from "react-pdf";
 //   import.meta.url
 // ).toString();
 
-pdfjs.GlobalWorkerOptions.workerSrc =
-  "//mozilla.github.io/pdf.js/build/pdf.worker.mjs";
-// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// pdfjs.GlobalWorkerOptions.workerSrc = `;//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PdfElement = (props: { detailInfo: any }) => {
   const infoData = props.detailInfo;
