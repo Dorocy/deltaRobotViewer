@@ -1,19 +1,24 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import "@babel/polyfill";
+import "@babel/polyfill/noConflict";
+import "jspdf/dist/polyfills.es.js";
 import { FileTextIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+// import workerSrc from "pdfjs-dist/build/pdf.worker.min.js";
+
+// 워커 파일의 경로를 설정
+// pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 
 // pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-//   "pdfjs-dist/legacy/build/pdf.worker.min.mjs",
+//   "pdfjs-dist/build/pdf.worker.min.mjs",
+//   // "npm:pdfjs-dist/build/pdf.worker.min.mjs",
 //   import.meta.url
 // ).toString();
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-// pdfjs.GlobalWorkerOptions.workerSrc = `;//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PdfElement = (props: { detailInfo: any }) => {
   const infoData = props.detailInfo;
@@ -60,22 +65,31 @@ const PdfElement = (props: { detailInfo: any }) => {
         style={{ maxWidth: "850px", maxHeight: "100vh", overflowY: "scroll" }}
       >
         <div>
-          {fileData && (
+          {/* {fileData && (
             <Document
               file={`/${fileName}`}
               onLoadSuccess={onDocumentLoadSuccess}
             >
               <Page pageNumber={pageNumber} />
-              {/* {Array.from(new Array(numPages), (_, index) => (
+              {Array.from(new Array(numPages), (_, index) => (
                 <Page
                   width={700}
                   key={index}
                   pageNumber={index + 1}
                   renderAnnotationLayer={false}
                 />
-              ))} */}
+              ))}
             </Document>
-          )}
+          )} */}
+          <Document
+            file={`${fileName}`}
+            options={{ workerSrc: "/pdf.worker.js" }}
+            onLoadSuccess={onDocumentLoadSuccess}
+          >
+            {Array.from(new Array(numPages), (el, index) => (
+              <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+            ))}
+          </Document>
         </div>
       </SheetContent>
     </Sheet>
