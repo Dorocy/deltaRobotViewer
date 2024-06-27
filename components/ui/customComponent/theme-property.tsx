@@ -68,7 +68,7 @@ const ThemeProperty = (props: {
               <div>
                 <p className="text-sm font-medium leading-none">value</p>
                 <p className="text-muted-foreground text-sm">
-                  {element.value[0].text}
+                  {element.value?.[0].text}
                 </p>
               </div>
             </div>
@@ -89,7 +89,7 @@ const ThemeProperty = (props: {
                 <p className="text-sm font-medium leading-none">Value</p>
                 <p className="text-muted-foreground text-sm">{element.value}</p>
               </div>
-              {getFileExtension(element.value) === "pdf" ? (
+              {getFileExtension(element.contentType) === "application/pdf" ? (
                 <PdfElement detailInfo={element.value} />
               ) : (
                 <CommonElement detailInfo={element.value} />
