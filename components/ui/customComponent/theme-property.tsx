@@ -11,6 +11,7 @@ const ThemeProperty = (props: {
 }) => {
   const element = props.dataElement;
   console.log('넘어온 각각의 서브모델엘리먼츠',element)
+  console.log(element.isProperty)
   // const { visible, setVisible } = useContext(ValueContext);
   const [inputValue, setInputValue] = useState(false);
 
@@ -34,7 +35,7 @@ const ThemeProperty = (props: {
             </p>
           )}
 
-          {element.constructor.name === "Property" && (
+          {element.isProperty && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
                 <Badge>{element.constructor.name}</Badge>
@@ -52,7 +53,7 @@ const ThemeProperty = (props: {
             </div>
           )}
 
-          {element.constructor.name === "MultiLanguageProperty" && (
+          {element.isMultiLanguageProperty && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
                 <Badge>{element.constructor.name}</Badge>
@@ -72,7 +73,7 @@ const ThemeProperty = (props: {
             </div>
           )}
 
-          {element.constructor.name === "File" && (
+          {element.isFile && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
                 <Badge>{element.constructor.name}</Badge>
