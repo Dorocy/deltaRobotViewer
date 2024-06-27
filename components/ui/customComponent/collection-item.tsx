@@ -10,6 +10,7 @@ import { SubmodelElementCollection } from "@aas-core-works/aas-core3.0-typescrip
 import { ChevronsUpDown } from "lucide-react";
 import React from "react";
 import "./collection-item.css";
+import ThemeProperty from "./theme-property";
 
 const CollapsibleItem = (props: { item: SubmodelElementCollection }) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -23,7 +24,6 @@ const CollapsibleItem = (props: { item: SubmodelElementCollection }) => {
         <div className="relative w-[200px]">
           <Badge>{"SubmodelElementCollection"}</Badge>
         </div>
-        {/* <Badge>{props.item.constructor.name}</Badge> */}
         <div className="w-[350px]">
           <p className="text-sm font-medium leading-none">idShort</p>
           <p className="text-muted-foreground  text-sm">{props.item.idShort}</p>
@@ -44,24 +44,27 @@ const CollapsibleItem = (props: { item: SubmodelElementCollection }) => {
       <>
         <CollapsibleContent className="space-y-2">
           {props.item.value?.map((element, i) => (
-            <div key={i} className=" border-b px-4 py-3 font-mono text-sm">
-              <div className="flex items-center space-x-4 ml-0 pl-4">
-                <div className="relative w-[200px]">
-                  <Badge>{element.constructor.name}</Badge>
-                </div>
+            <>
+              <ThemeProperty dataElement={element} />
+              {/* <div key={i} className=" border-b px-4 py-3 font-mono text-sm">
+                <div className="flex items-center space-x-4 ml-0 pl-4">
+                  <div className="relative w-[200px]">
+                    <Badge>{element.constructor.name}</Badge>
+                  </div>
 
-                <div className="w-[350px]">
-                  <p className="text-sm font-medium leading-none">idShort</p>
-                  <p className="text-muted-foreground  text-sm">
-                    {element.idShort}
-                  </p>
+                  <div className="w-[350px]">
+                    <p className="text-sm font-medium leading-none">idShort</p>
+                    <p className="text-muted-foreground  text-sm">
+                      {element.idShort}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium leading-none">value</p>
+                    <p className="text-muted-foreground  text-sm">{"item"}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium leading-none">value</p>
-                  <p className="text-muted-foreground  text-sm">{"item"}</p>
-                </div>
-              </div>
-            </div>
+              </div> */}
+            </>
           ))}
         </CollapsibleContent>
       </>
