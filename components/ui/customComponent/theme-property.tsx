@@ -39,7 +39,7 @@ const ThemeProperty = (props: {
           {aas.types.isProperty(element) && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
-                <Badge>{element.constructor.name}</Badge>
+                <Badge>{"Proeprty"}</Badge>
               </div>
               <div className="w-[350px]">
                 <p className="text-sm font-medium leading-none">idShort</p>
@@ -57,7 +57,7 @@ const ThemeProperty = (props: {
           {aas.types.isMultiLanguageProperty(element) && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
-                <Badge>{element.constructor.name}</Badge>
+                <Badge>{"MultiLanguageProperty"}</Badge>
               </div>
               <div className="w-[350px]">
                 <p className="text-sm font-medium leading-none">idShort</p>
@@ -77,7 +77,7 @@ const ThemeProperty = (props: {
           {aas.types.isFile(element) && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
-                <Badge>{element.constructor.name}</Badge>
+                <Badge>{"File"}</Badge>
               </div>
               <div className="w-[350px]">
                 <p className="text-sm font-medium leading-none">idShort</p>
