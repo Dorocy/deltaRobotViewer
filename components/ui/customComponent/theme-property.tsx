@@ -1,5 +1,6 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
+import * as aas from "@aas-core-works/aas-core3.0-typescript";
 import { useState } from "react";
 import CollapsibleItem from "./collection-item";
 import CommonElement from "./common-element";
@@ -10,8 +11,8 @@ const ThemeProperty = (props: {
   //   toggleDrawer: () => void;
 }) => {
   const element = props.dataElement;
-  console.log('넘어온 각각의 서브모델엘리먼츠',element)
-  console.log(element.isProperty)
+  console.log("넘어온 각각의 서브모델엘리먼츠", element);
+  console.log(element.isProperty);
   // const { visible, setVisible } = useContext(ValueContext);
   const [inputValue, setInputValue] = useState(false);
 
@@ -29,13 +30,13 @@ const ThemeProperty = (props: {
     <>
       <div className="justspace-x-4 mb-1 flex items-center rounded-md border p-3">
         <div className="flex-1 space-y-1">
-          {element.constructor.name === "SubmodelElementCollection" && (
+          {aas.types.isSubmodelElementCollection(element) && (
             <p className="text-sm font-medium leading-none">
               <CollapsibleItem item={element} />
             </p>
           )}
 
-          {element.isProperty && (
+          {aas.types.isProperty(element) && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
                 <Badge>{element.constructor.name}</Badge>
@@ -53,7 +54,7 @@ const ThemeProperty = (props: {
             </div>
           )}
 
-          {element.isMultiLanguageProperty && (
+          {aas.types.isMultiLanguageProperty(element) && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
                 <Badge>{element.constructor.name}</Badge>
@@ -73,7 +74,7 @@ const ThemeProperty = (props: {
             </div>
           )}
 
-          {element.isFile && (
+          {aas.types.isFile(element) && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
                 <Badge>{element.constructor.name}</Badge>
