@@ -68,7 +68,7 @@ const ThemeProperty = (props: {
               <div>
                 <p className="text-sm font-medium leading-none">value</p>
                 <p className="text-muted-foreground text-sm">
-                  {element.value?.[0].text}
+                  {element.value?.[0]?.text}
                 </p>
               </div>
             </div>

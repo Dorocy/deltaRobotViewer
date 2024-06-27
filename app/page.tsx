@@ -205,9 +205,9 @@ export default function Home() {
                   <Image
                     src={fmsFile}
                     alt="Card Image"
-                    width={300}
-                    height={300}
-                    className="w-full h-48 object-cover"
+                    width={250}
+                    height={250}
+                    className="w-full h-48 object-fill"
                   />
                 ) : (
                   <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
