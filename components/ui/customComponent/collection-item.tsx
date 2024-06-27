@@ -21,7 +21,7 @@ const CollapsibleItem = (props: { item: SubmodelElementCollection }) => {
     >
       <div className="flex items-center space-x-4 px-4">
         <div className="relative w-[200px]">
-          <Badge>{props.item.constructor.name}</Badge>
+          <Badge>{"SubmodelElementCollection"}</Badge>
         </div>
         {/* <Badge>{props.item.constructor.name}</Badge> */}
         <div className="w-[350px]">
