@@ -37,6 +37,7 @@ export default function Home() {
   const [logoFile, setLogoFile] = useState<any>();
   const [fmsFile, setFmsFile] = useState<string>();
   const [loading, setLoading] = useState(true);
+  const { Canvas } = useQRCode();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +48,7 @@ export default function Home() {
         console.log("djqtdj?", jsonData);
         const model = aas.jsonization.environmentFromJsonable(jsonData);
         setAASModel(model.value);
-        console.log("이거전에", model)
+        console.log("이거전에", model);
         console.log("여기여기", model.value);
         //Keti 메인 로고 가져오기
         const logoResponse = await fetch("KETI_CI국영문.png");
@@ -66,8 +67,6 @@ export default function Home() {
     };
     fetchData();
   }, []);
-
-  const { Canvas } = useQRCode();
 
   const submodels = aasFile?.submodels;
   const assetInfo = aasFile?.assetAdministrationShells;

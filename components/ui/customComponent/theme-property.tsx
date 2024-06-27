@@ -10,6 +10,7 @@ const ThemeProperty = (props: {
   //   toggleDrawer: () => void;
 }) => {
   const element = props.dataElement;
+  console.log('넘어온 각각의 서브모델엘리먼츠',element)
   // const { visible, setVisible } = useContext(ValueContext);
   const [inputValue, setInputValue] = useState(false);
 
