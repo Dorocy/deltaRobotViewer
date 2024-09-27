@@ -392,7 +392,7 @@ export default function Home() {
                 </div>
                 <div className="qrCode pt-5">
                   <Canvas
-                    text={"http://172.21.50.144:3002/"}
+                    text={"https://delta-robot-viewer.vercel.app"}
                     options={{
                       errorCorrectionLevel: "M",
                       margin: 3,
