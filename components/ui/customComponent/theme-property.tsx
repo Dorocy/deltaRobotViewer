@@ -11,9 +11,7 @@ const ThemeProperty = (props: {
   //   toggleDrawer: () => void;
 }) => {
   const element = props.dataElement;
-  console.log("넘어온 각각의 서브모델엘리먼츠", element);
-  console.log(element.isProperty);
-  // const { visible, setVisible } = useContext(ValueContext);
+
   const [inputValue, setInputValue] = useState(false);
 
   const [open, setOpen] = useState(true);
@@ -74,6 +72,71 @@ const ThemeProperty = (props: {
             </div>
           )}
 
+          {aas.types.isEntity(element) && (
+            <div className="flex items-center space-x-4 px-4">
+              <div className="relative w-[200px]">
+                <Badge>{"Entity"}</Badge>
+              </div>
+              <div className="w-[350px]">
+                <p className="text-sm font-medium leading-none">idShort</p>
+                <p className="text-muted-foreground text-sm">
+                  {element.idShort}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium leading-none">value</p>
+                <p className="text-muted-foreground text-sm">
+                  {element.globalAssetId}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {aas.types.isRelationshipElement(element) && (
+            <div className="flex items-center space-x-4 px-4">
+              <div className="relative w-[200px]">
+                <Badge>{"RelationshipElement"}</Badge>
+              </div>
+              <div className="w-[350px]">
+                <p className="text-sm font-medium leading-none">idShort</p>
+                <p className="text-muted-foreground text-sm">
+                  {element.idShort}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium leading-none">first</p>
+                <p className="text-muted-foreground text-sm">
+                  {element.first.keys?.[1]?.value}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium leading-none">second</p>
+                <p className="text-muted-foreground text-sm">
+                  {element.second.keys?.[1]?.value}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {aas.types.isReferenceElement(element) && (
+            <div className="flex items-center space-x-4 px-4">
+              <div className="relative w-[200px]">
+                <Badge>{"RelationshipElement"}</Badge>
+              </div>
+              <div className="w-[350px]">
+                <p className="text-sm font-medium leading-none">idShort</p>
+                <p className="text-muted-foreground text-sm">
+                  {element.idShort}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium leading-none">value</p>
+                <p className="text-muted-foreground text-sm">
+                  {element.value?.keys[0].value}
+                </p>
+              </div>
+            </div>
+          )}
           {aas.types.isFile(element) && (
             <div className="flex items-center space-x-4 px-4">
               <div className="relative w-[200px]">
@@ -95,7 +158,6 @@ const ThemeProperty = (props: {
                 <CommonElement detailInfo={element.value} />
               )}
               <PdfElement detailInfo={element.value} />
-              {/* <CommonElement detailInfo={element.value} /> */}
             </div>
           )}
         </div>
