@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
+
 import { useEffect, useState } from "react";
 
 const CommonElement = (props: { detailInfo: any }) => {
   const infoData = props.detailInfo;
   // const fileName = infoData.split("/").pop(); // 파일명 추출
-  const fileName = infoData.split("/").pop();
+  // const fileName = infoData.split("/").pop();
+  const fileName = "/logo/KETI_Logo.pdf";
   const [fileData, setFileData] = useState<string>();
 
   useEffect(() => {

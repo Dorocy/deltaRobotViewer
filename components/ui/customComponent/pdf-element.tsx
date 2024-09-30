@@ -13,6 +13,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const PdfElement = (props: { detailInfo: any }) => {
   const infoData = props.detailInfo;
   const fileName = "/SmallSiteDrawing2.pdf";
+
   const [fileData, setFileData] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
   const [numPages, setNumPages] = useState<number>(0); // Initialize with 0 pages

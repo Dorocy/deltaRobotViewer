@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ThemeProperty from "@/components/ui/customComponent/theme-property";
 import { Input } from "@/components/ui/input";
@@ -15,16 +14,19 @@ import { Box, Flex, Text } from "@radix-ui/themes";
 import KR from "country-flag-icons/react/3x2/KR";
 import US from "country-flag-icons/react/3x2/US";
 
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Package2Icon, QrCodeIcon, SearchIcon, UsersIcon } from "lucide-react";
+  CaptionsIcon,
+  FolderKanbanIcon,
+  MailIcon,
+  Package2Icon,
+  PhoneIcon,
+  PrinterIcon,
+  QrCodeIcon,
+  SearchIcon,
+  TextSearchIcon,
+} from "lucide-react";
 import { useQRCode } from "next-qrcode";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,6 +38,16 @@ type NewSubmodels = {
   modelContent: Submodel;
 };
 
+type ContactInfoType = {
+  FirstName: string;
+  MiddleNames: string;
+  Title: string;
+  Email: string;
+  Phone: string;
+  Fax: string;
+  AvailableTime: string;
+};
+
 export default function Home() {
   const [aasFile, setAASModel] = useState<AssetAdministrationShell | null>();
   const [logoFile, setLogoFile] = useState<any>();
@@ -44,6 +56,7 @@ export default function Home() {
   const { Canvas } = useQRCode();
   const [newSubmodel, setNewSubs] = useState<any[]>([]);
   const [inspectionData, setInspectionData] = useState<Submodel | null>(null);
+  const [ContactInfo, setContact] = useState<null | ContactInfoType>();
 
   useEffect(() => {
     // console.log("모데데잋터", ModelData);
@@ -62,7 +75,8 @@ export default function Home() {
         );
         setAASModel(model.value);
 
-        const logoResponse = await fetch("KETI_CI국영문.png");
+        const logoResponse = await fetch("/KETI_Logo.png");
+        console.log("로고?", logoResponse);
         const logoBlob = await logoResponse.blob();
         const logoUrl = URL.createObjectURL(logoBlob);
         setLogoFile(logoUrl);
@@ -126,8 +140,70 @@ export default function Home() {
         }
       }
     };
+
     if (newSubmodel.length > 0) {
-      console.log("New Submodel Detected:", newSubmodel);
+      const Infosubmodel: NewSubmodels = newSubmodel.find(
+        (submodel) => submodel?.modelContent?.idShort === "Nameplate"
+      );
+
+      // Infosubmodel.modelContent.submodelElements
+      const ContactModelData: ContactInfoType = {
+        FirstName: "",
+        MiddleNames: "",
+        Title: "",
+        Email: "",
+        Phone: "",
+        Fax: "",
+        AvailableTime: "",
+      };
+      console.log("데이확인", Infosubmodel);
+      console.log(Infosubmodel?.modelContent);
+      for (const item of Infosubmodel?.modelContent?.descend()) {
+        // console.log("데이터확인", Infosubmodel);
+        // console.log(item.descendOnce()
+        // if(item.)
+        if (
+          aas.types.isMultiLanguageProperty(item) &&
+          item.idShort?.toLowerCase().includes("firstname")
+        ) {
+          ContactModelData.FirstName = item.value?.[0].text ?? "";
+        } else if (
+          aas.types.isMultiLanguageProperty(item) &&
+          item.idShort?.toLowerCase().includes("nameofcontact")
+        ) {
+          ContactModelData.MiddleNames = item.value?.[0].text ?? "";
+        } else if (
+          aas.types.isMultiLanguageProperty(item) &&
+          item.idShort?.toLowerCase() === "title"
+        ) {
+          ContactModelData.Title = item.value?.[0].text ?? "";
+        } else if (
+          aas.types.isMultiLanguageProperty(item) &&
+          item.idShort?.toLowerCase().includes("telephonenumber")
+        ) {
+          ContactModelData.Phone = item.value?.[0].text ?? "";
+        } else if (
+          aas.types.isProperty(item) &&
+          item.idShort?.toLowerCase() === "emailaddress"
+        ) {
+          console.log(item);
+          ContactModelData.Email = item.value ?? "";
+        } else if (
+          aas.types.isMultiLanguageProperty(item) &&
+          item.idShort?.toLowerCase() === "faxnumber"
+        ) {
+          console.log(item);
+          ContactModelData.Fax = item.value?.[0].text ?? "";
+        } else if (
+          aas.types.isMultiLanguageProperty(item) &&
+          item.idShort?.toLowerCase().includes("availabletime")
+        ) {
+          ContactModelData.AvailableTime = item.value?.[0].text ?? "";
+        } else {
+        }
+      }
+
+      setContact(ContactModelData);
       const intervalId = setInterval(fetchInspectionData, 1000);
       return () => clearInterval(intervalId);
     }
@@ -142,7 +218,6 @@ export default function Home() {
     }
   }, [inspectionData]); // 의존성 배열에 inspectionData를 추가하여 값이 변경될 때마다 실행
 
-  console.log("확인된 newSubs:", newSubmodel);
   const assetInfo = aasFile?.assetInformation;
 
   return (
@@ -178,7 +253,7 @@ export default function Home() {
             </nav>
           </div> */}
           <div>
-            <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
+            <Card className="w-full max-w-sm pt-5 rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
               {fmsFile ? (
                 <Image
                   src={fmsFile}
@@ -226,17 +301,75 @@ export default function Home() {
           </div>
           <div>
             <Card>
-              <Flex gap="3" align="center">
-                {/* <Avatar radius="full" fallback="J" color="indigo" /> */}
-                <Box>
-                  <Text as="div" size="2" weight="bold">
-                    Jieun Jung
-                  </Text>
-                  <Text as="div" size="2" color="gray">
-                    Engineering
-                  </Text>
-                </Box>
-              </Flex>
+              <CardHeader>
+                <CardTitle>Contact Information</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="space-y-1 flex">
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                  </Avatar>
+                  <div className="pl-3">
+                    <p className="text-sm font-medium leading-none">{"name"}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {ContactInfo?.MiddleNames}
+                      {ContactInfo?.FirstName}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-grow">
+                  <div>
+                    <div className="flex">
+                      <CaptionsIcon className="text-sm font-medium leading-none size-4" />
+                      <p className="text-sm font-medium leading-none">
+                        {"Title"}
+                      </p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {ContactInfo?.Title}
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="flex">
+                      <MailIcon className="text-sm font-medium leading-none size-4" />
+                      <p className="text-sm font-medium leading-none">
+                        {"Email"}
+                      </p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {ContactInfo?.Email}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-grow">
+                  <div>
+                    <div className="flex">
+                      <PhoneIcon className="text-sm font-medium leading-none size-4" />
+                      <p className="text-sm font-medium leading-none">
+                        {"Phone"}
+                      </p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {ContactInfo?.Phone}
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="flex flex-grow">
+                      <PrinterIcon className="text-sm font-medium leading-none size-4" />
+                      <p className="text-sm font-medium leading-none">
+                        {"Fax"}
+                      </p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {ContactInfo?.Fax}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
             </Card>
           </div>
         </div>
@@ -263,7 +396,7 @@ export default function Home() {
                 />
               </div>
             </form>
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <span className="sr-only">Toggle user menu</span>
@@ -277,103 +410,111 @@ export default function Home() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Logout</DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {/* <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
-              {fmsFile ? (
-                <Image
-                  src={fmsFile}
-                  alt="Card Image"
-                  width={250}
-                  height={300}
-                  className="thumbnail w-full object-fill"
-                />
-              ) : (
-                <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                  <span>No Image Available</span>
-                </div>
-              )}
-              <CardHeader className="flex flex-row items-center justify-between pb-0">
-                <CardTitle className="text-lg font-bold">DelTaRobot</CardTitle>
-              </CardHeader>
-            </Card> */}
-
-            <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
+            <Card className="w-full max-w-lg rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-bold">
                   AAS Information
                 </CardTitle>
-                <UsersIcon className="w-4 h-4 text-muted-foreground" />
+                <TextSearchIcon className="w-4 h-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <Text as="div" size="2" weight="bold">
-                  AAS ID
-                </Text>
-                <Text as="div" color="gray" size="2">
+                <p className="text-md font-medium leading-none">{"AAS ID"}</p>
+                <p className="text-sm text-muted-foreground font-semibold">
                   {aasFile?.id}
-                </Text>
+                </p>
 
-                <Text as="div" size="2" weight="bold">
-                  Description
-                </Text>
-                <Text as="div" color="gray" size="2" className="flex pl-2">
-                  <US title="United States" className="w-5 mr-3" />
-                  {aasFile?.description?.[0].text}{" "}
-                </Text>
-                <Text as="div" color="gray" size="2" className="flex pl-2">
-                  <KR title="United States" className="w-5 mr-3" />
-                  {"델타로봇 자산의 AAS 입니다."}{" "}
-                </Text>
+                <div className="mt-2">
+                  <p className="text-md font-medium leading-none">
+                    {"Description"}
+                  </p>
+                  <div className="flex pl-2">
+                    <US title="United States" className="w-5 mr-3" />
+                    <p className="text-md font-semibold text-muted-foreground">
+                      {" "}
+                      {aasFile?.description?.[0].text}{" "}
+                    </p>
+                  </div>
+                  <div className="flex pl-2">
+                    <KR title="United States" className="w-5 mr-3" />
+                    <p className="text-md font-semibold text-muted-foreground">
+                      {" "}
+                      {"델타로봇 자산의 AAS 입니다."}
+                    </p>
+                  </div>
+                </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">AAS ID</div>
-                  <div className="text-gray-500 font-light">{aasFile?.id}</div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">Manufacturer</div>
-                  <div className="text-gray-500 font-semibold">SMIC</div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">ProductName</div>
-                  <div className="text-gray-500 font-semibold">Pencil case</div>
+                <div className="mt-2">
+                  <p className="text-md font-medium leading-none">
+                    {"Concluded Submodels"}
+                  </p>
+                  <div>
+                    {newSubmodel.length > 0
+                      ? newSubmodel?.map((element: NewSubmodels, i: number) => (
+                          <Badge key={i} variant="secondary">
+                            {element.modelContent.idShort ?? ""}
+                          </Badge>
+                        ))
+                      : loading}
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
+            <Card className="w-full max-w-lg rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-bold">
                   Asset Information
                 </CardTitle>
-                <UsersIcon className="w-4 h-4 text-muted-foreground" />
+                <FolderKanbanIcon className="w-4 h-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <Text as="div" size="2" weight="bold">
-                  Asset ID
-                </Text>
-                <Text as="div" color="gray" size="2">
+                <p className="text-md font-medium leading-none">{"Asset ID"}</p>
+                <p className="text-sm text-muted-foreground font-semibold">
                   {assetInfo?.globalAssetId}
-                </Text>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">AssetID</div>
-                  <div className="text-gray-500 font-light">
-                    {assetInfo?.globalAssetId}
+                </p>
+
+                <div className="mt-2">
+                  <p className="text-md font-medium leading-none">
+                    {"Description"}
+                  </p>
+                  <div className="flex pl-2">
+                    <US title="United States" className="w-5 mr-3" />
+                    <p className="text-md font-semibold text-muted-foreground">
+                      {" "}
+                      {"Product of Delta Robot"}{" "}
+                    </p>
+                  </div>
+                  <div className="flex pl-2">
+                    <KR title="United States" className="w-5 mr-3" />
+                    <p className="text-md font-semibold text-muted-foreground">
+                      {" "}
+                      {"델타로봇 제품입니다."}
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">AAS ID</div>
-                  <div className="text-gray-500 font-light">{aasFile?.id}</div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">Manufacturer</div>
-                  <div className="text-gray-500 font-semibold">SMIC</div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="font-medium">ProductName</div>
-                  <div className="text-gray-500 font-semibold">Pencil case</div>
+
+                <div className="mt-2">
+                  <div className="flex items-center justify-between">
+                    <div className="font-medium">Manufacturer</div>
+                    <div className="text-gray-500 font-semibold">SMIC</div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="font-medium">ProductName</div>
+                    <div className="text-gray-500 font-semibold">
+                      DeltaRobot
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="font-medium">SerialNumber</div>
+                    <div className="text-gray-500 font-semibold">
+                      40000002838411
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>

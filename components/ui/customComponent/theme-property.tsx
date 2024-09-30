@@ -157,7 +157,7 @@ const ThemeProperty = (props: {
               ) : (
                 <CommonElement detailInfo={element.value} />
               )}
-              <PdfElement detailInfo={element.value} />
+              {/* <PdfElement detailInfo={element.value} /> */}
             </div>
           )}
         </div>
