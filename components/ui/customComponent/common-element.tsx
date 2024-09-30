@@ -10,7 +10,7 @@ const CommonElement = (props: { detailInfo: any }) => {
   const infoData = props.detailInfo;
   // const fileName = infoData.split("/").pop(); // 파일명 추출
   // const fileName = infoData.split("/").pop();
-  const fileName = "/logo/KETI_Logo.pdf";
+  const fileName = "KETI_Logo.png";
   const [fileData, setFileData] = useState<string>();
 
   useEffect(() => {
