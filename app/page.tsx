@@ -156,12 +156,8 @@ export default function Home() {
         Fax: "",
         AvailableTime: "",
       };
-      console.log("데이확인", Infosubmodel);
-      console.log(Infosubmodel?.modelContent);
+
       for (const item of Infosubmodel?.modelContent?.descend()) {
-        // console.log("데이터확인", Infosubmodel);
-        // console.log(item.descendOnce()
-        // if(item.)
         if (
           aas.types.isMultiLanguageProperty(item) &&
           item.idShort?.toLowerCase().includes("firstname")
@@ -224,7 +220,7 @@ export default function Home() {
     <div className="grid min-h-screen w-full overflow-hidden lg:grid-cols-[350px_1fr]">
       <div className="hidden border-r bg-muted/40 lg:block">
         <div className="flex flex-col gap-2">
-          <div className="flex h-[60px] items-center px-6">
+          <div className="flex h-[55px] items-center px-6">
             <Link
               href="#"
               className="flex items-center gap-2 font-semibold"
@@ -234,24 +230,12 @@ export default function Home() {
                 <Image
                   src={logoFile}
                   alt="logo_image"
-                  width={200}
+                  width={270}
                   height={100}
                 />
               )}
             </Link>
           </div>
-          {/* <div className="flex-1">
-            <nav className="grid items-start px-4 text-sm font-medium">
-              <Link
-                href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                prefetch={false}
-              >
-                <HomeIcon className="h-4 w-4" />
-                Dashboard
-              </Link>
-            </nav>
-          </div> */}
           <div>
             <Card className="w-full max-w-sm pt-5 rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
               {fmsFile ? (
