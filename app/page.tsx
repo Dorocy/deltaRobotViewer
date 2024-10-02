@@ -209,8 +209,7 @@ export default function Home() {
     if (inspectionData) {
       // inspectionData가 변경될 때 실행할 로직
       console.log("InspectionData has been updated:", inspectionData);
-
-      // 리렌더링 트리거 로직을 여기에 추가할 수 있습니다.
+      setInspectionData(inspectionData);
     }
   }, [inspectionData]); // 의존성 배열에 inspectionData를 추가하여 값이 변경될 때마다 실행
 
@@ -560,56 +559,29 @@ export default function Home() {
                             )
                           : loading}
                       </TabsList>
-                      {/* {newSubmodel?.map((element: NewSubmodels, i: number) => (
-                        <TabsContent
-                          key={i}
-                          value={element?.modelContent.idShort ?? ""}
-                        >
-
-                          {(() => {
-                            const elements = [];
-
-                            for (const item of element.modelContent.descendOnce()) {
-                              if (aas.types.isSubmodelElement(item)) {
-                                elements.push(
-                                  <ThemeProperty
-                                    key={item.idShort}
-                                    dataElement={item}
-                                  />
-                                );
-                              }
-                            }
-
-                            return elements;
-                          })()}
-                        </TabsContent>
-                      ))} */}
-
                       {newSubmodel.map((element: NewSubmodels, i: number) => (
                         <TabsContent
                           key={i}
                           value={element?.modelContent?.idShort ?? ""}
                         >
-                          {/* InspectionData 처리 */}
                           {element?.modelContent?.idShort ===
                           "InspectionData" ? (
                             <div>
-                              {/* <h2>Inspection Data</h2> */}
                               {inspectionData ? (
-                                (() => {
-                                  const elements = [];
-                                  for (const item of inspectionData.descendOnce()) {
+                                // inspectionData의 IterableIterator를 배열로 변환 후 map() 사용
+                                Array.from(inspectionData.descendOnce()).map(
+                                  (item) => {
                                     if (aas.types.isSubmodelElement(item)) {
-                                      elements.push(
+                                      return (
                                         <ThemeProperty
                                           key={item.idShort}
                                           dataElement={item}
                                         />
                                       );
                                     }
+                                    return null;
                                   }
-                                  return elements;
-                                })()
+                                )
                               ) : (
                                 <p>Loading inspection data...</p>
                               )}
@@ -617,22 +589,19 @@ export default function Home() {
                           ) : (
                             // 그 외 Submodel에 대한 처리
                             <div>
-                              {(() => {
-                                const elements = [];
-
-                                for (const item of element.modelContent.descendOnce()) {
-                                  if (aas.types.isSubmodelElement(item)) {
-                                    elements.push(
-                                      <ThemeProperty
-                                        key={item.idShort}
-                                        dataElement={item}
-                                      />
-                                    );
-                                  }
+                              {Array.from(
+                                element.modelContent.descendOnce()
+                              ).map((item) => {
+                                if (aas.types.isSubmodelElement(item)) {
+                                  return (
+                                    <ThemeProperty
+                                      key={item.idShort}
+                                      dataElement={item}
+                                    />
+                                  );
                                 }
-
-                                return elements;
-                              })()}
+                                return null;
+                              })}
                             </div>
                           )}
                         </TabsContent>
