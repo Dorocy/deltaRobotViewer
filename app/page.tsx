@@ -424,9 +424,11 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p className="text-md font-medium leading-none">{"AAS ID"}</p>
-                <p className="text-sm text-muted-foreground font-semibold">
-                  {aasFile?.id}
-                </p>
+                <div className="pl-2">
+                  <p className="text-md text-muted-foreground font-semibold break-words">
+                    {aasFile?.id}
+                  </p>
+                </div>
 
                 <div className="mt-2">
                   <p className="text-md font-medium leading-none">
@@ -474,9 +476,11 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p className="text-md font-medium leading-none">{"Asset ID"}</p>
-                <p className="text-sm text-muted-foreground font-semibold">
-                  {assetInfo?.globalAssetId}
-                </p>
+                <div>
+                  <p className="text-md text-muted-foreground font-semibold break-words">
+                    {assetInfo?.globalAssetId}
+                  </p>
+                </div>
 
                 <div className="mt-2">
                   <p className="text-md font-medium leading-none">
@@ -519,7 +523,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="w-full max-w-sm rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
+            <Card className="w-full max-w-xs rounded-lg overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-bold">
                   Mobile QR Code
@@ -531,9 +535,9 @@ export default function Home() {
                 <div className="text-md font-light text-muted-foreground">
                   Scan this QR code using Mobile
                 </div>
-                <div className="qrCode pt-5">
+                <div className="qrCode pt-5 flex justify-center items-center">
                   <Canvas
-                    text={"https://delta-robot-viewer.vercel.app"}
+                    text={"https://https://delta-robot-viewer.vercel.app/"}
                     options={{
                       errorCorrectionLevel: "M",
                       margin: 3,
