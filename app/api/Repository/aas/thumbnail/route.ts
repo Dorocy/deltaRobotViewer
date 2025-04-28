@@ -2,7 +2,7 @@ export async function GET(req: Request, res: Response) {
   try {
     // 외부 API에서 이미지 가져오기
     const imageResponse = await fetch(
-      "https://hm2024.wefactory.kr/api/v3.0/shells/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNjA0MF82MDUwXzQwNDJfNTIwMQ==/asset-information/thumbnail",
+      "https://106.254.248.74:36941/api/v3.0/shells/aHR0cHM6Ly9leGFtcGxlLmNvbS9pZHMvc20vNjA0MF82MDUwXzQwNDJfNTIwMQ==/asset-information/thumbnail",
       {
         headers: {
           "Content-Type": "application/octet-stream", // octet-stream 헤더 사용
