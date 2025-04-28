@@ -17,7 +17,7 @@ export async function GET(
 
   try {
     const response = await fetch(
-      `https://hm2024.wefactory.kr/api/v3.0/submodels/${id}`,
+      `https://106.254.248.74:36941/api/v3.0/submodels/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
