@@ -63,7 +63,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         // const responseThumbnail = await fetch("/api/Repository/aas/thumbnail");
-        const responseThumbnail = await fetch("/deltarobotimage.png");
+        const responseThumbnail = await fetch("/deltarobot_final.png");
         const data = await responseThumbnail.blob();
         const ImageUrl = URL.createObjectURL(data);
         setThumbnailFile(ImageUrl);
